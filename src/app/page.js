@@ -1,7 +1,19 @@
+import { useForm } from '@/hooks/useForm'
 import Image from 'next/image'
 import { Input } from './components/Input'
 
 export default function Home() {
+  const initialForm ={
+    cargo: '',
+    experiencia: '',
+    salario: '',
+    habilidad: '',
+    requisitos: ''
+  }
+  const [formValues, handleInputChange, reset] = useForm(initialForm)
+  const { cargo, salario, experiencia, habilidad, requisitos } = formValues;
+  const abilityList = ['Comunicación', 'Trabajo en equipo', 'Resolución de problemas', 'Adaptabilidad', 'Liderazgo', 'Creatividad', 'Organización', 'Habilidades', 'técnicas', 'Orientación al cliente', 'Pensamiento analítico']
+
   return (
     <main>
        <Image
@@ -20,14 +32,8 @@ export default function Home() {
         </div>
         <Input label='Habilidades'>
           <select data-te-select-init className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-            <option value="4">Four</option>
-            <option value="5">Five</option>
-            <option value="6">Six</option>
-            <option value="7">Seven</option>
-            <option value="8">Eight</option>
+            {abilityList.map((ability, indx) => 
+            <option key={`${ability}-${indx}`} value={ability}>{ability}</option>)}
           </select>
         </Input>
         <Input placeHolder='separe con una coma (,) los requisitos' label='Requisitos excluyentes'/>
