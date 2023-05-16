@@ -1,11 +1,12 @@
 const axios = require('axios');
 
-const apiKey = process.env.OPENAI_API_KEY;
+const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+console.log(apiKey);
 
 const openai = axios.create({
   baseURL: 'https://api.openai.com/v1',
   headers: {
-    'Authorization': `Bearer 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`,
+    'Authorization': `Bearer ${apiKey}`,
     'Content-Type': 'application/json'
   },
 });
@@ -17,7 +18,7 @@ async function sendMessage(message) {
       messages: [
         {
           role: "system",
-          content: "The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly."
+          content: "Eres un entrevistador empático y comprensivo con los candidatos, llevarás a cabo una entrevista de trabajo para la posición de CTO Junior."
         },
         {
           role: "user",

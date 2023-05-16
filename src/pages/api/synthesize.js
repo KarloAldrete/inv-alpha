@@ -18,7 +18,7 @@ async function synthesizeText(req, res) {
     console.log('Text: ', text);
     const [response] = await client.synthesizeSpeech({
       input: { text: text },
-      voice: { languageCode: 'es-MX', ssmlGender: 'MALE' },
+      voice: { languageCode: 'es-US', name: 'es-US-Neural2-B', ssmlGender: "MALE" },
       audioConfig: { audioEncoding: 'MP3' },
     });
 
