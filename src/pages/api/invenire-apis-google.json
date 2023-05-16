@@ -1,0 +1,15 @@
+{
+    "web": {
+        "client_id": "83781949465-4cq55nj3m0qi0hp2f5kmg34bhvvke7gh.apps.googleusercontent.com",
+        "project_id": "invenire-test-386107",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "https://www.integromat.com/oauth/cb/google-custom",
+            "https://www.integromat.com/oauth/cb/google-cloud-speech",
+            "https://www.integromat.com/oauth/cb/google-restricted"
+        ]
+    }
+}
