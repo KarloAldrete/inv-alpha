@@ -4,6 +4,7 @@ import React, {  useReducer, useState } from 'react'
 import { Player, Controls } from '@lottiefiles/react-lottie-player';
 import { initialStateRecording, recordingReducer } from './reducer'
 import AudioRecorder from '../components/AudioRecorder';
+import AudioPlayer from '../components/AudioPlayer';
 
 
 const Interview = () => {
@@ -47,7 +48,10 @@ const Interview = () => {
           Escuchar
         </span>
       </button>
-
+      {messages &&
+            messages.map(({ id, audio }) => (
+              <AudioPlayer key={id} audio={audio} />
+            ))}
      
       <AudioRecorder {...{onFinish, onStartUserRecording, onStopUserRecording}} isRecording={userRecording} />
    
