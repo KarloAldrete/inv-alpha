@@ -12,8 +12,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}
-     
+      <body className={roboto.className}>
+      <Image
+          className="logo"
+          src="/invenire-logo.svg"
+          alt="Invenire Logo"
+          width={180}
+          height={37}
+          priority
+        />
+        {children}
       <footer>
       <Image
           className='img-layout'
