@@ -3,8 +3,8 @@
 import React, {  useReducer, useState } from 'react'
 import { Player, Controls } from '@lottiefiles/react-lottie-player';
 import { initialStateRecording, recordingReducer } from './reducer'
-import AudioRecorder from '../components/AudioRecorder';
-import AudioPlayer from '../components/AudioPlayer';
+import AudioRecorder from '../../components/AudioRecorder';
+import AudioPlayer from '../../components/AudioPlayer';
 
 
 const Interview = () => {

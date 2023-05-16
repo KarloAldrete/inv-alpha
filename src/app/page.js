@@ -1,6 +1,6 @@
 "use client"
 
-import { Input } from './components/Input'
+import { Input } from '../components/Input'
 import Link from "next/link"
 import { useForm } from './hooks/useForm'
 
