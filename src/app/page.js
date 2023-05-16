@@ -1,8 +1,8 @@
 "use client"
 
-import { useForm } from '@/app/hooks/useForm'
 import { Input } from './components/Input'
 import Link from "next/link"
+import { useForm } from './hooks/useForm'
 
 export default function Home() {
   const initialForm ={
