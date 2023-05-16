@@ -1,53 +1,68 @@
+import { SpeechClient } from '@google-cloud/speech';
+import { IncomingForm } from 'formidable';
 import fs from 'fs';
+import path from 'path';
 
-export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    console.log('Audio received');
-    
-    // Create an array to store the audio data chunks
-    const audioData = [];
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
-    // Create a readable stream to read the audio data chunk by chunk
-    const readableStream = req;
-    readableStream.on('data', chunk => {
-      audioData.push(chunk);
-    });
-
-    console.log('Audio data:', audioData);
-
-    // When the stream has ended, send the audio data to the Speech API
-    readableStream.on('end', async () => {
-      console.log('Audio stream ended');
-
-      const audio = Buffer.concat(audioData);
-
-      console.log('Audio buffer:', audio);
-
-      const speechClient = new SpeechClient({
-        keyFilename: 'lib/invenire-apis-google.json',
-      });
-
-      try {
-        const [response] = await speechClient.recognize({
-          config: { encoding: 'LINEAR16', sampleRateHertz: 16000, languageCode: 'en-US' },
-          audio: { content: audio },
-        });
-
-        console.log('Recognition response:', response);
-
-        const transcription = response.results
-          .map(result => result.alternatives[0].transcript)
-          .join('\n');
-
-        console.log('Transcription generated:', transcription);
-
-        res.status(200).json({ transcription });
-      } catch (error) {
-        console.error('Error in transcription:', error);
-        res.status(500).send('Error in transcription');
-      }
-    });
-  } else {
-    res.status(400).send('Unrecognized request method');
+export default async (req, res) => {
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: 'Sorry, only POST requests please' });
+    return;
   }
-}
+
+  const form = new IncomingForm();
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error parsing form' });
+      return;
+    }
+  
+    console.log(files);
+
+    if (!files.audio) {
+      res.status(400).json({ error: 'No audio file' });
+      return;
+    }
+
+    const audioPath = files.audio.filepath;
+    const audio = fs.readFileSync(audioPath); 
+
+    const client = new SpeechClient({
+      keyFilename: path.resolve('src/invenire-test-386107-1f3cf2feb1eb.json'),
+    });
+
+    try {
+      const config = {
+        encoding: 'webm',
+        sampleRateHertz: 48000,
+        languageCode: 'es-ES',
+      };
+
+      const request = {
+        audio: {
+          content: audio,
+        },
+        config: config,
+      };
+
+      const [response] = await client.recognize(request);
+
+      const transcription = response.results
+        .map((result) => result.alternatives[0].transcript)
+        .join('\n');
+      console.log(`Transcripcion: ${transcription}`);
+
+      res.status(200).json({ transcription });
+    } catch (error) {
+      console.error('Error en la solicitud de reconocimiento:', error);
+      res.status(500).json({ error: 'Error en la solicitud de reconocimiento' });
+    }
+  });
+};
+
