@@ -9,7 +9,7 @@ useEffect(() => {
     }
   }, [ref, audio]);
 
-  return <audio ref={ref} autoPlay={false} controls />;
+  return <audio ref={ref} autoPlay={false} controls={false} />;
 };
 
 export default AudioPlayer;
