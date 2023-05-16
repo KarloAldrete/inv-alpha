@@ -94,6 +94,7 @@ const AudioRecorder = ({ onFinish }) => {
 </span>
 </button>
 );
+
 };
 
 export default AudioRecorder;
