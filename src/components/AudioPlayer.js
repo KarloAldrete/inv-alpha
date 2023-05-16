@@ -12,6 +12,8 @@ const AudioPlayer = ({ audio }) => {
     ref.current.src = audio;
   }, [audio]);
 
+  console.log(audio);
+
   return (
     <button
       onClick={handleAudio}
