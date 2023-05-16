@@ -1,4 +1,5 @@
 const textToSpeech = require('@google-cloud/text-to-speech');
+
 async function synthesizeText(req, res) {
   process.env.GOOGLE_APPLICATION_CREDENTIALS = 'src/invenire-test-386107-1f3cf2feb1eb.json';
 
@@ -13,16 +14,19 @@ async function synthesizeText(req, res) {
   }
 
   try {
-    console.log('Estamos procesando la solicitud...');
+    console.log('Synthesizing speech...');
+    console.log('Text: ', text);
     const [response] = await client.synthesizeSpeech({
-      input: {text: text},
-      voice: {languageCode: 'es-MX', ssmlGender: 'MALE'},
-      audioConfig: {audioEncoding: 'MP3'},
+      input: { text: text },
+      voice: { languageCode: 'es-MX', ssmlGender: 'MALE' },
+      audioConfig: { audioEncoding: 'MP3' },
     });
 
-    res.send(response.audioContent);
-  }
-  catch (error) {
+    const audioContent = response.audioContent;
+    console.log('Audio content written to file: output.mp3');
+
+    res.status(200).json({ audio: audioContent });
+  } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error synthesizing speech.' });
   }

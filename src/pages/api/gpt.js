@@ -1,9 +1,11 @@
 const axios = require('axios');
 
+const apiKey = process.env.OPENAI_API_KEY;
+
 const openai = axios.create({
   baseURL: 'https://api.openai.com/v1',
   headers: {
-    'Authorization': `Bearer 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`,
+    'Authorization': `Bearer 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`,
     'Content-Type': 'application/json'
   },
 });

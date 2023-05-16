@@ -44,16 +44,15 @@ const AudioRecorder = ({ onFinish }) => {
       try {
         responseData = JSON.parse(text);
         const gptText = await sendMessage(responseData.transcription);
-
-        const audioData = gptText.data;
-        const audioBlob = new Blob([audioData.audio], { type: "audio/webm; codecs=opus" });
-
-        onFinish({ id: stream.id, audio: audioBlob });
-
+      
+        const audioData = gptText.data.audio;
+        const audioBlob = new Blob([Buffer.from(audioData.data)], { type: 'audio/mp3' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+      
+        onFinish({ id: stream.id, audio: audioUrl });
       } catch (err) {
-        console.error("Error al interpretar la respuesta como JSON: ", err);
+        console.error('Error al interpretar la respuesta como JSON: ', err);
       }
-      console.log(responseData);
     };
 
     const tracks = stream.getAudioTracks();
@@ -75,7 +74,6 @@ const AudioRecorder = ({ onFinish }) => {
 
   useEffect(() => {
     if (isRecording || !content || !stream) return;
-    onFinish({ id: stream.id, audio: content });
     setStream(null);
     setContent(null);
   }, [isRecording, content, stream, onFinish]);
