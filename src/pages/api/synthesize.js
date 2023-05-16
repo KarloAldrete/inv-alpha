@@ -1,22 +1,31 @@
-import textToSpeech from '@google-cloud/text-to-speech';
+const textToSpeech = require('@google-cloud/text-to-speech');
+async function synthesizeText(req, res) {
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = 'src/invenire-test-386107-1f3cf2feb1eb.json';
 
-export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    const client = new textToSpeech.TextToSpeechClient({
-      keyFilename: './invenire-apis-google.json',
-    });
-    const text = req.body;
+  const client = new textToSpeech.TextToSpeechClient();
 
+  const { text } = req.body;
+
+  if (typeof text !== 'string') {
+    console.error('Invalid input:', text);
+    res.status(400).json({ error: 'Invalid input type. Type has to be text.' });
+    return;
+  }
+
+  try {
+    console.log('Estamos procesando la solicitud...');
     const [response] = await client.synthesizeSpeech({
-      input: { text },
-      voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
-      audioConfig: { audioEncoding: 'MP3' },
+      input: {text: text},
+      voice: {languageCode: 'es-MX', ssmlGender: 'MALE'},
+      audioConfig: {audioEncoding: 'MP3'},
     });
 
-    const audio = response.audioContent.toString('base64');
-
-    res.status(200).send({ audio });
-  } else {
-    res.status(400).send('Unrecognized request method');
+    res.send(response.audioContent);
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error synthesizing speech.' });
   }
 }
+
+module.exports = synthesizeText;
