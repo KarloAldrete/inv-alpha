@@ -6,4 +6,37 @@
 body {
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  color:#374151
 }
+
+main {
+  margin-top: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+footer {
+  height: 20vh;
+  width: 100vw;
+  background: linear-gradient(180deg, rgba(24, 216, 183, 0) 0%, #C9F6EE 100%);
+  position: absolute;
+  bottom: 0;
+}
+
+.img-layout{
+  position: relative !important;
+  z-index: -1;
+  top: -23vh !important;
+  height: 30vh !important;
+  width: 100vw  !important;
+}
+
+
