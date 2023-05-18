@@ -18,8 +18,9 @@ export default function Home() {
   const { cargo, salario, experiencia, habilidad, requisitos, estudios, preguntas_claves } = formValues;
 
   const handleStartInterview = () => {
-   console.log(formValues)
-  }
+    localStorage.setItem('formValues', JSON.stringify(formValues));
+ }
+ 
 
   return (
     <main >

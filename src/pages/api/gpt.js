@@ -11,10 +11,12 @@ const openai = axios.create({
   },
 });
 
+const formValues = JSON.parse(localStorage.getItem('formValues'));
+
 let conversation = [
   {
     role: "system",
-    content: "Eres un entrevistador empático y comprensivo con los candidatos, llevarás a cabo una entrevista de trabajo para la posición de CTO Junior."
+    content: `Eres un entrevistador empático y comprensivo con los candidatos. Vas a llevar a cabo una entrevista para el cargo de ${formValues.cargo}. El salario ofrecido es de ${formValues.salario}. Se requiere una experiencia mínima de ${formValues.experiencia} años. Las habilidades necesarias para este puesto incluyen ${formValues.habilidad}. Los requisitos son los siguientes: ${formValues.requisitos}. Los estudios mínimos necesarios son ${formValues.estudios}. Las preguntas clave de esta entrevista son las siguientes: ${formValues.preguntas_claves}.`
   }
 ];
 
