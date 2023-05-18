@@ -11,21 +11,24 @@ const openai = axios.create({
   },
 });
 
+let conversation = [
+  {
+    role: "system",
+    content: "Eres un entrevistador empático y comprensivo con los candidatos, llevarás a cabo una entrevista de trabajo para la posición de CTO Junior."
+  }
+];
+
 async function sendMessage(message) {
   try {
+    conversation.push({
+      role: "user",
+      content: message
+    });
+
     const response = await openai.post('/chat/completions', {
       model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content: "Eres un entrevistador empático y comprensivo con los candidatos, llevarás a cabo una entrevista de trabajo para la posición de CTO Junior."
-        },
-        {
-          role: "user",
-          content: message
-        }
-      ],
-      max_tokens: 150,
+      messages: conversation,
+      max_tokens: 1500,
       temperature: 0.7,
       top_p: 1,
       frequency_penalty: 0.0,
@@ -33,11 +36,20 @@ async function sendMessage(message) {
       stop: ["\n", " Human:", " AI:"]
     });
 
-    console.log(response.data.choices[0].message.content);
+    const aiReply = response.data.choices[0].message.content;
+    console.log(aiReply);
+
+    conversation.push({
+      role: "system",
+      content: aiReply
+    });
 
     const synthesizeResponse = await axios.post('/api/synthesize', {
-      text: response.data.choices[0].message.content
+      text: aiReply
     });
+
+    // muestrame la conversacion y aparte los tokens utilizados por toda la conversacion
+    console.log(conversation + "\n" + response.data.choices[0].tokens);
 
     return synthesizeResponse;
 
@@ -45,7 +57,6 @@ async function sendMessage(message) {
     // console.error(error);
   }
 }
-
 
 module.exports = {
   sendMessage
