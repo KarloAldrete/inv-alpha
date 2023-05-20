@@ -1,7 +1,6 @@
 const axios = require('axios');
 
 const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-console.log(apiKey);
 
 const openai = axios.create({
   baseURL: 'https://api.openai.com/v1',

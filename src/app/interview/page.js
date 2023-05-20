@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Player, Controls } from '@lottiefiles/react-lottie-player';
 import { initialStateRecording, recordingReducer } from './reducer';
 import AudioRecorder from '../../components/AudioRecorder';
@@ -10,11 +10,8 @@ const Interview = () => {
   const [messages, setMessages] = useState({});
   const [state, dispatch] = useReducer(recordingReducer, initialStateRecording);
   const {
-    userRecording,
-    userSoundActive,
-    IASoundActive,
-    iaPlayerAudio,
-    userPlayerAudio,
+    recording,
+    playerAudio,
   } = state;
 
   const onFinishRecording = ({ id, audio }) => {
@@ -24,38 +21,39 @@ const Interview = () => {
   const onStartUserRecording = () => {
     dispatch({ type: 'USER-START-RECORDING' });
   };
-
-  const onStopUserRecording = () => {
-    dispatch({ type: 'USER-STOP-RECORDING' });
+  const onStartPlayAudio = () => {
+    dispatch({ type: 'PLAY-AUDIO' });
   };
 
-  console.log('messages', messages);
+  const onStopAudio = () => {
+    dispatch({ type: 'STOP-RECORDING-PLAY' });
+  };
 
   return (
     <div className='interview-wrap'>
       <Player
-        src={iaPlayerAudio ? './soundazulclaro.json' : './soundgris.json'}
-        style={{ height: '300px', width: '300px' }}
-        autoplay={iaPlayerAudio}
-        loop={iaPlayerAudio}
+        src={playerAudio ? './soundazulclaro.json' : './soundgris.json'}
+        style={{ height: '30vh',  maxWidth: '300px', width:'80vw' }}
+        autoplay={playerAudio}
+        loop={playerAudio}
       >
         <Controls visible={false} buttons={['play', 'repeat', 'frame', 'debug']} />
       </Player>
 
-      {messages && <AudioPlayer audio={messages.audio} />}
+      {messages && <AudioPlayer audio={messages.audio} onStartPlayAudio={onStartPlayAudio} onStopAudio={onStopAudio} />}
 
       <AudioRecorder
         onFinish={onFinishRecording}
         onStartUserRecording={onStartUserRecording}
-        onStopUserRecording={onStopUserRecording}
-        isRecording={userRecording}
+        onStopUserRecording={onStopAudio}
+        isRecording={recording}
       />
 
       <Player
-        src={userRecording ? './soundazuloscuro.json' : './soundgris.json'}
-        style={{ height: '300px', width: '300px' }}
-        autoplay={userRecording}
-        loop={userRecording}
+        src={recording ? './soundazuloscuro.json' : './soundgris.json'}
+        style={{ height: '30vh', maxWidth: '300px', width:'80vw'}}
+        autoplay={recording}
+        loop={recording}
       >
         <Controls visible={false} buttons={['play', 'repeat', 'frame', 'debug']} />
       </Player>
@@ -64,6 +62,8 @@ const Interview = () => {
 };
 
 export default Interview;
+
+
 
 
 

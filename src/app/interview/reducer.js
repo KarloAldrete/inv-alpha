@@ -1,9 +1,8 @@
 "use client"
 
 export const initialStateRecording = {
-    userRecording:false,
-    iaPlayerAudio:false,
-    userPlayerAudio:false,
+    recording:false,
+    playerAudio:false,
   }
 
 
@@ -12,18 +11,24 @@ export const recordingReducer = (state, action)=>{
       case "USER-START-RECORDING":
         return{
           ...state,
-          userRecording:true,
-          iaPlayerAudio:false,
-          userPlayerAudio:false,
+          recording:true,
+          playerAudio:false,
         }
 
-        case "USER-STOP-RECORDING":
-            return{
-              ...state,
-              userRecording:false,
-              iaPlayerAudio:false,
-              userPlayerAudio:false,
-            }
+      case "STOP-RECORDING-PLAY":
+          return{
+            ...state,
+            recording:false,
+            playerAudio:false,
+
+          }
+      case "PLAY-AUDIO":
+          return{
+            ...state,
+            recording:false,
+            playerAudio:true,
+
+          }
      
       case "RESTART":
         return initialStateRecording;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { sendMessage } from '../pages/api/gpt';
 
-const AudioRecorder = ({ onFinish }) => {
+const AudioRecorder = ({ onFinish, onStartUserRecording, onStopUserRecording }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [stream, setStream] = useState(null);
   const [content, setContent] = useState(null);
@@ -17,6 +17,7 @@ const AudioRecorder = ({ onFinish }) => {
       setStream(audioStream);
       setIsRecording(true);
       setVoiceRecorder(mediaRecorder);
+      onStartUserRecording()
     } catch (e) {
       console.log("User didn't allowed us to access the microphone.");
     }
@@ -76,6 +77,7 @@ const AudioRecorder = ({ onFinish }) => {
     if (isRecording || !content || !stream) return;
     setStream(null);
     setContent(null);
+    onStopUserRecording()
   }, [isRecording, content, stream, onFinish]);
 
   return (
