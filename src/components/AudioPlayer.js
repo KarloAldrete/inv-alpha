@@ -6,19 +6,19 @@ const AudioPlayer = ({ audio, onStartPlayAudio, onStopAudio }) => {
   const [activeAudio, setActiveAudio] = useState(false);
 
   const handleAudio = () => {
-    if(audio){const audioRef = ref.current;
-    audioRef.src = audio;
-    audioRef.addEventListener('ended', handleAudioEnded);
-    if (!activeAudio) {
-      setActiveAudio(true);
-      onStartPlayAudio();
-      audioRef.play();
-      console.log(audioRef);
-    } else {
-      setActiveAudio(false);
-      audioRef.pause();
-      onStopAudio();
-    }}
+    if(audio){
+      const audioRef = ref.current;
+      audioRef.src = audio;
+      audioRef.addEventListener('ended', handleAudioEnded);
+      if (!activeAudio) {
+        setActiveAudio(true);
+        onStartPlayAudio();
+        audioRef.play();
+      } else {
+        setActiveAudio(false);
+        audioRef.pause();
+        onStopAudio();
+      }}
   };
 
   useEffect(() => {
@@ -26,9 +26,10 @@ const AudioPlayer = ({ audio, onStartPlayAudio, onStopAudio }) => {
     onStartPlayAudio();
     const audioRef = ref.current;
     audioRef.src = audio;
-    audioRef.play();
-    refButton.current.click();
-
+    if(audio){
+      audioRef.play();
+      refButton.current.click();
+     }
     return () => {
       audioRef.removeEventListener('ended', handleAudioEnded);
    
